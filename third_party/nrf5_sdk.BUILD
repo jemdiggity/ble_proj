@@ -92,6 +92,7 @@ cc_binary(
         "-mcpu=cortex-m0",
         # use newlib in nano version
         "--specs=nano.specs",
+        "-lnosys",
     ],
     deps = [
         "components/toolchain/gcc/nrf51_common.ld",
