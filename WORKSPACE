@@ -15,9 +15,9 @@ new_http_archive(
 new_http_archive(
   name = "nrf5_sdk",
   build_file = "third_party/nrf5_sdk.BUILD",
-  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v12.1.0.tar.gz"],
-  sha256 = "4039b7011e2c6ab0728d3d7e95cfb8d42c523cad45c26e8382f0b43111693826",
-  strip_prefix = "nrf5_sdk-12.1.0/sdk",
+  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v12.2.0.tar.gz"],
+  sha256 = "ce3d9f20f112523433ae82e8c6a8e958f608827202cf398f12bd419c5ce7290b",
+  strip_prefix = "nrf5_sdk-12.2.0/sdk",
 )
 
 new_git_repository(
