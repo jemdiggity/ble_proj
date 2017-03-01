@@ -47,7 +47,6 @@ toolchain {
   # linker_flag: "-v"
 
   linker_flag: "-lm"
-  linker_flag: "-lc"
   linker_flag: "-Lexternal/toolchain_gcc_arm_none_darwin/arm-none-eabi/lib"
   linker_flag: "-Bexternal/toolchain_gcc_arm_none_darwin/arm-none-eabi/bin"
 
