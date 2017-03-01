@@ -19,4 +19,3 @@ new_http_archive(
   sha256 = "4b386cd455f18a8bc6d8045b5e9fb9fc6dd86ad6cf9a97d9008ae717909d943c",
   strip_prefix = "vendor_nrf5_sdk-vendor-10.0.0/sdk",
 )
-
