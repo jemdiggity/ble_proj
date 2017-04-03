@@ -14,10 +14,11 @@ git_repository(
 
 load("@com_github_jemdiggity_rules_os_dependent_http_archive//:os_dependent_http_archive.bzl", "os_dependent_http_archive")
 
-load(
-    "@bazel_tools//tools/build_defs/repo:http.bzl",
-    "http_archive",
-)
+# Use skylark rules once https://github.com/bazelbuild/bazel/issues/2700 is resolved.
+#load(
+#     "@bazel_tools//tools/build_defs/repo:http.bzl",
+#     "http_archive",
+# )
 
 load(
     "@bazel_tools//tools/build_defs/repo:git.bzl",
@@ -39,7 +40,7 @@ os_dependent_http_archive(
   },
 )
 
-http_archive(
+new_http_archive(
   name = "nrf5_sdk",
   build_file = "//:third_party/nrf5_sdk.BUILD",
   urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v12.2.0.tar.gz"],
