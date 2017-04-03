@@ -54,3 +54,11 @@ new_git_repository(
   remote = "https://github.com/kmackay/micro-ecc.git",
   commit = "14222e062d77f45321676e813d9525f32a88e8fa",
 )
+
+new_http_archive(
+  name = "mbed",
+  build_file = "//:third_party/mbed-os.BUILD",
+  urls = ["https://github.com/ARMmbed/mbed-os/archive/mbed-os-5.4.1.tar.gz"],
+  sha256 = "9b620c511d6c2e039baa8c7330867e2a593ae43412a8cfca6350ef29a10ab2e8",
+  strip_prefix = "mbed-os-mbed-os-5.4.1"
+)

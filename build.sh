@@ -8,9 +8,8 @@ bazel build \
   --compilation_mode=opt \
   --verbose_failures \
   --spawn_strategy=standalone \
-  @nrf5_sdk//...
-
-bazel-ble_proj/external/toolchain_gcc_arm_none/bin/arm-none-eabi-size \
-  bazel-bin/external/nrf5_sdk/examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s130_pca10028
-
-
+  --conlyopt="-std=gnu99" \
+  --cxxopt="-std=gnu++11" \
+  --cxxopt="-fno-rtti" \
+  --cxxopt="-Wvla" \
+  @mbed//:mbed
