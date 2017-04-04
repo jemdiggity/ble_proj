@@ -12,4 +12,5 @@ bazel build \
   --cxxopt="-std=gnu++11" \
   --cxxopt="-fno-rtti" \
   --cxxopt="-Wvla" \
-  @mbed//:mbed
+  @mbed//:mbed \
+  @nrf5_sdk//:all

@@ -470,8 +470,8 @@ cc_library(
         "targets/TARGET_NORDIC/TARGET_NRF5/spi_api.c",
         "targets/TARGET_NORDIC/TARGET_NRF5/us_ticker.c",
     ],
-    copts = copts +
-        ["-D%s" % i for i in defines] +
-        ["-Iexternal/mbed/%s" % i for i in includes],
     hdrs = glob(["**/*.h"]),
+    copts = copts +
+            ["-D%s" % i for i in defines] +
+            ["-Iexternal/mbed/%s" % i for i in includes],
 )
