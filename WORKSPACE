@@ -14,6 +14,12 @@ git_repository(
 
 load("@com_github_jemdiggity_rules_os_dependent_http_archive//:os_dependent_http_archive.bzl", "os_dependent_http_archive")
 
+git_repository(
+    name = "com_github_jemdiggity_rules_hex",
+    remote = "https://github.com/jemdiggity/rules_hex.git",
+    commit = "3ff46b2e46a247697190911fdf3c17e7110aa22a",
+)
+
 # Use skylark rules once https://github.com/bazelbuild/bazel/issues/2700 is resolved.
 #load(
 #     "@bazel_tools//tools/build_defs/repo:http.bzl",
