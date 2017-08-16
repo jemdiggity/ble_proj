@@ -1,3 +1,5 @@
+load("@com_github_jemdiggity_rules_hex//:hex.bzl", "hex")
+
 includes = [
     "components",
     "components/ble/common",
@@ -26,34 +28,66 @@ includes = [
     "components/libraries/timer",
     "components/libraries/util",
     "components/softdevice/common/softdevice_handler",
-    "components/softdevice/s130/headers",
-    "components/softdevice/s130/headers/nrf51",
     "components/toolchain",
     "components/toolchain/cmsis/include",
     "components/toolchain/gcc",
     "examples/dfu/bootloader_secure",
     "examples/dfu/bootloader_secure/../../bsp",
     "examples/dfu/bootloader_secure/config",
-    "examples/dfu/bootloader_secure/config/secure_dfu_secure_dfu_ble_s130_pca10028",
-    "examples/dfu/bootloader_secure/pca10028/config",
     "external/micro-ecc/micro-ecc",
     "external/nano-pb",
 ]
 
+includes_nrf51 = includes + [
+        "components/softdevice/s130/headers",
+        "components/softdevice/s130/headers/nrf51",
+        "examples/dfu/bootloader_secure/config/secure_dfu_secure_dfu_ble_s130_pca10028",
+        "examples/dfu/bootloader_secure/pca10028/config",
+    ]
+
+includes_nrf52 = includes + [
+        "components/softdevice/s132/headers",
+        "components/softdevice/s132/headers/nrf52",
+        "examples/dfu/bootloader_secure/config/secure_dfu_secure_dfu_ble_s132_pca10040",
+        "examples/dfu/bootloader_secure/pca10040/config",
+    ]
+
 defines = [
     "SWI_DISABLE0",
-    "BOARD_PCA10028",
     "SOFTDEVICE_PRESENT",
-    "NRF51",
     "NRF_DFU_SETTINGS_VERSION=1",
     "__HEAP_SIZE=0",
     "SVC_INTERFACE_CALL_AS_NORMAL_FUNCTION",
-    "S130",
     "BLE_STACK_SUPPORT_REQD",
-    "NRF51422",
-    "NRF_SD_BLE_API_VERSION=2",
     #fixme HACK how to generate keys..?
     "NRF_DFU_DEBUG_VERSION",
+]
+
+defines_nrf51 = defines + [
+    "NRF_SD_BLE_API_VERSION=2",
+    "BOARD_PCA10028",
+    "NRF51",
+    "S130",
+    "NRF51422",
+]
+
+defines_nrf52 = defines + [
+    "NRF_SD_BLE_API_VERSION=3",
+    "BOARD_PCA10040",
+    "NRF52",
+    "S132",
+    "NRF52832",
+    "NRF52_PAN_36",
+    "NRF52_PAN_12",
+    "NRF52_PAN_15",
+    "NRF52_PAN_58",
+    "NRF52_PAN_55",
+    "NRF52_PAN_54",
+    "NRF52_PAN_31",
+    "NRF52_PAN_51",
+    "CONFIG_GPIO_AS_PINRESET",
+    "NRF52_PAN_20",
+    "NRF52_PAN_64",
 ]
 
 copts = [
@@ -67,9 +101,7 @@ copts = [
     "-flto",
 ]
 
-cc_binary(
-    name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s130_pca10028",
-    srcs = [
+srcs = [
         "components/libraries/util/app_error_weak.c",
         "components/libraries/scheduler/app_scheduler.c",
         "components/libraries/timer/app_timer.c",
@@ -98,8 +130,6 @@ cc_binary(
         "components/ble/common/ble_advdata.c",
         "components/ble/common/ble_conn_params.c",
         "components/ble/common/ble_srv_common.c",
-        "components/toolchain/gcc/gcc_startup_nrf51.S",
-        "components/toolchain/system_nrf51.c",
         "components/softdevice/common/softdevice_handler/softdevice_handler.c",
         "components/softdevice/common/softdevice_handler/softdevice_handler_appsh.c",
         "components/libraries/bootloader/nrf_bootloader.c",
@@ -111,10 +141,19 @@ cc_binary(
         "components/libraries/bootloader/dfu/nrf_dfu_settings.c",
         "components/libraries/bootloader/dfu/nrf_dfu_transport.c",
         "components/libraries/bootloader/dfu/nrf_dfu_utils.c",
+    ]
+
+
+cc_binary(
+    name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s130_pca10028",
+    srcs = srcs + [
+        "components/toolchain/gcc/gcc_startup_nrf51.S",
+        "components/toolchain/system_nrf51.c",
     ] + glob(["**/*.h"]),
     copts = copts +
-            ["-D%s" % i for i in defines] +
-            ["-Iexternal/nrf5_sdk/%s" % i for i in includes],
+            ["-D%s" % i for i in defines_nrf51] +
+            ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf51],
+
     linkopts = [
         # "-Xlinker -Map=output.map",
         "-mthumb",
@@ -133,3 +172,37 @@ cc_binary(
         "@micro_ecc//:micro_ecc",
     ],
 )
+
+cc_binary(
+    name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040",
+    srcs = srcs + [
+        "components/toolchain/gcc/gcc_startup_nrf52.S",
+        "components/toolchain/system_nrf52.c",
+    ] + glob(["**/*.h"]),
+    copts = copts +
+            ["-D%s" % i for i in defines_nrf52] +
+            ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf52],
+
+    linkopts = [
+        # "-Xlinker -Map=output.map",
+        "-mthumb",
+        "-mabi=aapcs",
+        "-Lexternal/nrf5_sdk/examples/dfu/bootloader_secure",
+        "-Lexternal/nrf5_sdk/components/toolchain/gcc",
+        "-Tsecure_dfu_gcc_nrf52.ld",
+        "-mcpu=cortex-m4",
+        "-mfpu=fpv4-sp-d16",
+        # use newlib in nano version
+        "--specs=nano.specs",
+        "-lnosys",
+    ],
+    deps = [
+        "components/toolchain/gcc/nrf52_common.ld",
+        "examples/dfu/bootloader_secure/secure_dfu_gcc_nrf52.ld",
+        "@micro_ecc//:micro_ecc",
+    ],
+)
+
+hex(
+    name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040_hex",
+    src = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040")
