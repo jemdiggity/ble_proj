@@ -15,7 +15,7 @@
 # ==============================================================================
 
 # Select bazel version.
-BAZEL_VERSION="0.4.5"
+BAZEL_VERSION="0.5.3_1"
 
 set +e
 local_bazel_ver=$(bazel version 2>&1 | grep -i label | awk '{print $3}')
@@ -41,7 +41,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     grep bazel-complete.bash ~/.bashrc && echo "source /usr/local/lib/bazel/bin/bazel-complete.bash" >> ~/.bashrc
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX
-    brew install bazel
+    if [[ $(which bazel) == "" ]]; then
+        brew install bazel
+    fi
     #don't fail if bazel upgrade returns error which it does if we're already at the latest version
     set +e
     brew upgrade bazel
