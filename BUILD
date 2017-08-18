@@ -1,6 +1,6 @@
 filegroup(
     name = "srcs",
-    srcs = glob(["**"]),
+    srcs = glob(["hello.cc"]),
     visibility = ["//src/test/shell/bazel/testdata:__pkg__"],
 )
 

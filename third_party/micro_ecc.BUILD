@@ -10,7 +10,7 @@ defines = [
 ]
 
 cc_library(
-    name = "micro_ecc",
+    name = "micro_ecc_nrf51",
     srcs = [
         "uECC.c",
     ] + glob([
@@ -23,8 +23,29 @@ cc_library(
         "-mcpu=cortex-m0",
         "-mthumb",
         "-mabi=aapcs",
-        "-std=c99",
         "-mfloat-abi=soft",
+        "-fno-builtin",
+        "--short-enums",
+    ] + ["-D%s" % i for i in defines],
+    linkstatic = 1,
+)
+
+cc_library(
+    name = "micro_ecc_nrf52",
+    srcs = [
+        "uECC.c",
+    ] + glob([
+        "**/*.inc",
+    ]) + glob([
+        "**/*.h",
+    ]),
+    hdrs = ["uECC.h"],
+    copts = [
+        "-mcpu=cortex-m4",
+        "-mthumb",
+        "-mabi=aapcs",
+        "-mfloat-abi=hard",
+        "-mfpu=fpv4-sp-d16",
         "-fno-builtin",
         "--short-enums",
     ] + ["-D%s" % i for i in defines],

@@ -91,11 +91,9 @@ defines_nrf52 = defines + [
 ]
 
 copts = [
-    "-mcpu=cortex-m0",
     "-mthumb",
     "-mabi=aapcs",
     "-std=c99",
-    "-mfloat-abi=soft",
     "-fno-builtin",
     "--short-enums",
     "-flto",
@@ -149,10 +147,13 @@ cc_binary(
     srcs = srcs + [
         "components/toolchain/gcc/gcc_startup_nrf51.S",
         "components/toolchain/system_nrf51.c",
-    ] + glob(["**/*.h"]),
-    copts = copts +
-            ["-D%s" % i for i in defines_nrf51] +
-            ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf51],
+        ] + glob(["**/*.h"]),
+    copts = copts + [
+        "-mcpu=cortex-m0",
+        "-mfloat-abi=soft",
+        ] +
+        ["-D%s" % i for i in defines_nrf51] +
+        ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf51],
 
     linkopts = [
         # "-Xlinker -Map=output.map",
@@ -160,6 +161,7 @@ cc_binary(
         "-mabi=aapcs",
         "-Lexternal/nrf5_sdk/examples/dfu/bootloader_secure",
         "-Lexternal/nrf5_sdk/components/toolchain/gcc",
+        "-Lexternal/toolchain_gcc_arm_none/arm-none-eabi/lib",
         "-Tsecure_dfu_gcc_nrf51.ld",
         "-mcpu=cortex-m0",
         # use newlib in nano version
@@ -169,8 +171,13 @@ cc_binary(
     deps = [
         "components/toolchain/gcc/nrf51_common.ld",
         "examples/dfu/bootloader_secure/secure_dfu_gcc_nrf51.ld",
-        "@micro_ecc//:micro_ecc",
+        "@micro_ecc//:micro_ecc_nrf51",
     ],
+)
+
+hex(
+    name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s130_pca10028_hex",
+    src = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s130_pca10028",
 )
 
 cc_binary(
@@ -179,18 +186,23 @@ cc_binary(
         "components/toolchain/gcc/gcc_startup_nrf52.S",
         "components/toolchain/system_nrf52.c",
     ] + glob(["**/*.h"]),
-    copts = copts +
-            ["-D%s" % i for i in defines_nrf52] +
-            ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf52],
-
+    copts = copts + [
+        "-mcpu=cortex-m4",
+        "-mfloat-abi=hard",
+        "-mfpu=fpv4-sp-d16",
+        ] +
+        ["-D%s" % i for i in defines_nrf52] +
+        ["-Iexternal/nrf5_sdk/%s" % i for i in includes_nrf52],
     linkopts = [
         # "-Xlinker -Map=output.map",
         "-mthumb",
         "-mabi=aapcs",
         "-Lexternal/nrf5_sdk/examples/dfu/bootloader_secure",
         "-Lexternal/nrf5_sdk/components/toolchain/gcc",
+        "-Lexternal/toolchain_gcc_arm_none/arm-none-eabi/lib/armv7e-m/fpu",
         "-Tsecure_dfu_gcc_nrf52.ld",
         "-mcpu=cortex-m4",
+        "-mfloat-abi=hard",
         "-mfpu=fpv4-sp-d16",
         # use newlib in nano version
         "--specs=nano.specs",
@@ -199,10 +211,11 @@ cc_binary(
     deps = [
         "components/toolchain/gcc/nrf52_common.ld",
         "examples/dfu/bootloader_secure/secure_dfu_gcc_nrf52.ld",
-        "@micro_ecc//:micro_ecc",
+        "@micro_ecc//:micro_ecc_nrf52",
     ],
 )
 
 hex(
     name = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040_hex",
-    src = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040")
+    src = "examples_dfu_bootloader_secure_dfu_secure_dfu_ble_s132_pca10040",
+)
