@@ -49,9 +49,9 @@ os_dependent_http_archive(
 new_http_archive(
   name = "nrf5_sdk",
   build_file = "//:third_party/nrf5_sdk.BUILD",
-  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v13.0.0.tar.gz"],
-  sha256 = "7d0b9309444998fd475c275141ba17e7da0b878dd32fe53f35616eafd0053872",
-  strip_prefix = "nrf5_sdk-13.0.0/sdk",
+  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v13.1.0.tar.gz"],
+  sha256 = "aa71700e06c996c60ca2a6fd4aeffc4f442afff8202d44fe3d92ddd1646b0a49",
+  strip_prefix = "nrf5_sdk-13.1.0/sdk",
 )
 
 new_git_repository(
