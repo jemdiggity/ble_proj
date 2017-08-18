@@ -49,16 +49,16 @@ os_dependent_http_archive(
 new_http_archive(
   name = "nrf5_sdk",
   build_file = "//:third_party/nrf5_sdk.BUILD",
-  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v12.2.0.tar.gz"],
-  sha256 = "ce3d9f20f112523433ae82e8c6a8e958f608827202cf398f12bd419c5ce7290b",
-  strip_prefix = "nrf5_sdk-12.2.0/sdk",
+  urls = ["https://github.com/jemdiggity/nrf5_sdk/archive/v13.0.0.tar.gz"],
+  sha256 = "7d0b9309444998fd475c275141ba17e7da0b878dd32fe53f35616eafd0053872",
+  strip_prefix = "nrf5_sdk-13.0.0/sdk",
 )
 
 new_git_repository(
   name = "micro_ecc",
   build_file = "//:third_party/micro_ecc.BUILD",
   remote = "https://github.com/kmackay/micro-ecc.git",
-  commit = "14222e062d77f45321676e813d9525f32a88e8fa",
+  commit = "601bd11062c551b108adbb43ba99f199b840777c",
 )
 
 new_http_archive(
